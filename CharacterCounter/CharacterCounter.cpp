@@ -2,40 +2,48 @@
 #include <fstream>
 #include <string>
 
-
-int main(){
-  // Prompting and Entering the file name
-  std::cout << "Enter your filename: ";
-  std::string inputName;
-  getline(std::cin, inputName);
-  // testing to see if user entered a empty line
-  while(inputName.empty()){
-    std::cout << "Empty file name!\nPlease enter again: ";
-    getline(std::cin, inputName);
-  }
-  //std::cout << name << std::endl;
-
-  // Trying to find the file in the local directory
-  std::fstream input, output;
-  input.open(inputName, std::fstream::in);
-  if(!input.good()){
-    std::cout << "Cannot find file: " << inputName << '\n'
-              << "Exiting with return value -1" << std::endl;
-    return -1;
-  }
-
-  // Code to count all the non empty characters in the file
+int CharacterCounter(std::fstream &input, std::fstream &output){
   std::string line;
   unsigned long int counter = 0;
   while(getline(input, line)){
     for(int i = 0; i < line.size(); ++i){
-      //std::cout << line[i];
-      //std::cout << line[0];
       if(line[i] != ' '){
 	++counter;
       }
     }
   }
-  std::cout << "Characters: " << counter << std::endl;
+  return counter;
+}
+
+void printCharacters(std::fstream &input, std::fstream &output){
+  std::cout << "Characters: " << CharacterCounter(input, output) << std::endl;
+}
+
+int main(){
+  //************************************************************//
+  //**** Same start of main file for every utility function ****//
+  //************************************************************//
+  // propmts for input //
+  std::cout << "Enter your file: ";
+  std::string name;
+  getline(std::cin, name);
+  // tests to see if entered anything //
+  while(name.empty()){
+    std::cout << "You didn't type anything. Enter again: ";
+    getline(std::cin, name);
+  }
+
+  // Starts opening files and writing to files //
+  std::fstream input, output;
+  input.open(name, std::fstream::in);
+  output.open("output.txt", std::fstream::out);
+
+  // Tests to see if input is readable //
+  if(!input.good()){
+    std::cout << "File cannot be found. Exiting with return code -1" << std::endl;
+    return -1;
+  }
+  //************************************************************//
+  printCharacters(input, output);
   return 0;
 }

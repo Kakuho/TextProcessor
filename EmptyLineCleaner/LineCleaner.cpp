@@ -2,27 +2,7 @@
 #include <fstream>
 #include <string>
 
-int main(){
-  // propmts for input
-  std::cout << "Enter your file: ";
-  std::string name;
-  getline(std::cin, name);
-  // tests to see if entered anything
-  while(name.empty()){
-    std::cout << "You didn't type anything. Enter again: ";
-    getline(std::cin, name);
-  }
-
-  std::fstream input, output;
-  input.open(name, std::fstream::in);
-  output.open("output.txt", std::fstream::out);
-
-  if(!input.good()){
-    std::cout << "File cannot be found. Exiting with return code -1" << std::endl;
-    return -1;
-  }
-  
-  // this is where code starts
+void CleanLines(std::fstream &input, std::fstream &output){
   std::string line;
   while(getline(input, line)){
     if(line.empty()){
@@ -38,4 +18,33 @@ int main(){
     line.erase(0, line.size());
   }
   input.close(); output.close();
+}
+
+int main(){
+  //************************************************************//
+  //**** Same start of main file for every utility function ****//
+  //************************************************************//
+  // propmts for input //
+  std::cout << "Enter your file: ";
+  std::string name;
+  getline(std::cin, name);
+  // tests to see if entered anything //
+  while(name.empty()){
+    std::cout << "You didn't type anything. Enter again: ";
+    getline(std::cin, name);
+  }
+
+  // Starts opening files and writing to files //
+  std::fstream input, output;
+  input.open(name, std::fstream::in);
+  output.open("output.txt", std::fstream::out);
+
+  // Tests to see if input is readable //
+  if(!input.good()){
+    std::cout << "File cannot be found. Exiting with return code -1" << std::endl;
+    return -1;
+  }
+  //************************************************************//
+  CleanLines(input, output);
+
 }
